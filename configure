@@ -1,0 +1,42 @@
+#!/bin/bash
+
+[ "$1" == "apply" ] && apply=1 || apply=0
+[ $apply == 0 ] && echo "This is a dry-run, use '$0 apply'"
+
+get_destination() {
+  grep -m 1 "*>" "$1" | \
+  sed 's/# \*>\|\/\/ \*>//g' | \
+  sed 's/^[[:space:]]*//;s/[[:space:]]*$//'
+}
+
+find . -mindepth 2 -type f -not -path '*/\.*' | while read -r file; do
+  file_source=$(realpath "$file")
+  destination=$(get_destination "$file")
+
+  if [[ -z "$destination" ]]; then
+    continue
+  fi
+
+  echo -n "$file *> $destination"
+  destination="${destination/#\~/$HOME}"
+
+  mkdir -p "$(dirname "$symlink_dest")"
+
+  if [[ -e "$destination" || -L "$destination" ]]; then
+    override=1
+    [ $apply == 1 ] && msg="replaced" || msg="replace"
+  else
+    override=0
+    [ $apply == 1 ] && msg="created" || msg="create"
+  fi
+
+  if [ $apply == 0 ]; then
+    echo -n " [$msg]"
+  else
+    [ $override == 1 ] && rm $destination
+    ln -s "$file_source" "$destination" && \
+    echo -n " [$msg]" || \
+    echo -n " [failed]"
+  fi
+  echo
+done
