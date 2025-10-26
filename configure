@@ -6,7 +6,7 @@
 get_destination() {
   if [ -f "$1" ]; then
     grep -m 1 "*>" "$1" | \
-    sed 's/# \*>\|\/\/ \*>//g' | \
+    sed 's/" \*>\|# \*>\|\/\/ \*>//g' | \
     sed 's/^[[:space:]]*//;s/[[:space:]]*$//'
   elif [ -d "$1" ] && [ -f "$1/.dest" ]; then
     cat $1/.dest
