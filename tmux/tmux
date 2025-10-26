@@ -1,0 +1,119 @@
+# *> ~/.tmux.conf
+# Change bind key to C-a in combination of using C-w for vim
+set -g prefix2 C-a
+bind-key a send-prefix -2 # Jump to beginning of line
+bind r source-file ~/.tmux.conf \; display-message "Config reloaded..."
+bind K clear-history \; display "current buffer history cleared"
+
+# Vim-like keys for copy/pasting
+set -gw mode-keys vi
+bind-key -Tcopy-mode-vi 'v' send -X begin-selection
+
+# Vim-like key bindings for pane navigation
+unbind h
+bind h select-pane -L
+unbind j
+bind j select-pane -D
+unbind k
+bind k select-pane -U
+unbind l
+bind l select-pane -R
+
+# Vertical split screen
+bind '\' split-window -h
+# Horizontal split screen
+bind - split-window -v
+
+bind -r P swap-window -t -1 # swap with previous tab
+bind -r N swap-window -t +1 # swap with next tab
+
+#setw -g aggressive-resize on
+
+# Pane border colours
+set -g pane-border-style fg=colour235
+set -g pane-active-border-style fg=colour240
+
+## Pane numbering colours
+set -g display-panes-active-colour colour20
+set -g display-panes-colour colour33
+
+## Display message colours
+set -g message-style bg=colour233,fg=colour166
+
+# Set status bar
+set -g status-style fg=colour240,bg=colour233
+set -g status-left '#[fg=colour37] λ '
+set -g status-left-length 32
+set -g status-right '#[fg=colour240]#(whoami)#[fg=colour234]@#[fg=colour245]#H '
+set -g status-right-length 64
+set -g status-justify left
+
+# Window/session selection colours
+set -gw mode-style fg=black,bg=colour166
+
+# Pane number display colors
+set -g display-panes-active-colour white
+set -g display-panes-colour white
+
+## Clock color
+set -gw clock-mode-colour colour166
+set -gw clock-mode-style 12
+
+# Window status (tab) colors and format
+set -gw window-status-style fg=colour240,bg=colour234,bold
+set -gw window-status-format \
+  '#[fg=colour16,bg=colour235] #{window_index} #[default] #{window_name} '
+set -gw window-status-current-style fg=colour231,bg=colour235,none
+set -gw window-status-current-format \
+  '#[fg=colour36,bg=colour236] #{window_index} #[default] #{window_name} '
+
+# Automatic rename
+set -gw automatic-rename on
+
+# Misc
+set -g base-index 1
+set -g pane-base-index 1
+set -g renumber-windows on    # Renumber windows on close so they are sequential
+set -g history-limit 100000
+set -g bell-action current
+set -gw monitor-activity off
+set -gw xterm-keys on
+
+# fix ssh agent when tmux is detached
+setenv -g SSH_AUTH_SOCK $HOME/.ssh/ssh_auth_sock
+set -g update-environment -r
+
+# Enforce 256-color terminal so tmux is happy
+set-option -g default-terminal "xterm-256color"
+
+# Mouse
+set -g mouse on
+
+bind-key & kill-window
+
+# Fix tmux scrolling in less and man
+legacy_scroll="nano less man"
+bind-key -T root WheelUpPane \
+if-shell -Ft= '#{?mouse_any_flag,1,#{pane_in_mode}}' \
+'send -Mt=' \
+'if-shell -t= "#{?alternate_on,true,false} || echo \"#{legacy_scroll}\" | grep -q \"#{pane_current_command}\"" \
+"send -t= Up Up Up" "copy-mode -et="'
+
+bind-key -T root WheelDownPane \
+if-shell -Ft = '#{?pane_in_mode,1,#{mouse_any_flag}}' \
+'send -Mt=' \
+'if-shell -t= "#{?alternate_on,true,false} || echo \"#{legacy_scroll}\" | grep -q \"#{pane_current_command}\"" \
+"send -t= Down Down Down" "send -Mt="'
+
+set -g @plugin 'tmux-plugins/tpm'
+
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-continuum'
+set -g @plugin 'tmux-plugins/tmux-yank'
+
+set -g @continuum-restore 'on'
+
+run '~/.tmux/plugins/tpm/tpm'
+
+# set -g c0-change-trigger 20
+# set -g c0-change-interval 1000

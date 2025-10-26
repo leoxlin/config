@@ -1,0 +1,6 @@
+#!/bin/bash
+
+mkdir -p $HOME/.zsh
+if [ ! -d $HOME/.zsh/ohmyzsh ]; then
+  git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git $HOME/.zsh/ohmyzsh
+fi
