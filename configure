@@ -4,13 +4,17 @@
 [ $apply == 0 ] && echo "This is a dry-run, use '$0 apply'"
 
 get_destination() {
-  grep -m 1 "*>" "$1" | \
-  sed 's/# \*>\|\/\/ \*>//g' | \
-  sed 's/^[[:space:]]*//;s/[[:space:]]*$//'
+  if [ -f "$1" ]; then
+    grep -m 1 "*>" "$1" | \
+    sed 's/# \*>\|\/\/ \*>//g' | \
+    sed 's/^[[:space:]]*//;s/[[:space:]]*$//'
+  elif [ -d "$1" ] && [ -f "$1/.dest" ]; then
+    cat $1/.dest
+  fi
 }
 
-find . -mindepth 2 -type f -not -path '*/\.*' | while read -r file; do
-  file_source=$(realpath "$file")
+find . -mindepth 2 -not -path '*/\.*' | while read -r file; do
+  file_path=$(realpath "$file")
   destination=$(get_destination "$file")
 
   if [[ -z "$destination" ]]; then
@@ -33,8 +37,8 @@ find . -mindepth 2 -type f -not -path '*/\.*' | while read -r file; do
   if [ $apply == 0 ]; then
     echo -n " [$msg]"
   else
-    [ $override == 1 ] && rm $destination
-    ln -s "$file_source" "$destination" && \
+    [ $override == 1 ] && rm -rf $destination
+    ln -s "$file_path" "$destination" && \
     echo -n " [$msg]" || \
     echo -n " [failed]"
   fi
