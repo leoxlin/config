@@ -1,0 +1,35 @@
+" *> ~/.vimrc
+set nocompatible              " vim required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" Plugins managed by vundle
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'tpope/vim-sensible'
+Plugin 'tpope/vim-fugitive'
+Plugin 'ntpeters/vim-better-whitespace'
+Plugin 'kien/ctrlp.vim'
+Plugin 'derekwyatt/vim-scala'
+Plugin 'solarnz/thrift.vim'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'vim-scripts/dbext.vim'
+Plugin 'fatih/vim-go'
+Plugin 'zchee/deoplete-go'
+Plugin 'puppetlabs/puppet-syntax-vim'
+Plugin 'preservim/nerdtree'
+Plugin 'wlangstroth/vim-racket'
+Plugin 'nvie/vim-flake8'
+Plugin 'darfink/vim-plist'
+Plugin 'simplenote-vim/simplenote.vim'
+Plugin 'vitalk/vim-shebang'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+map <C-n> :NERDTreeToggle<CR>
+
+runtime! config/*.vim
