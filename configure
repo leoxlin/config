@@ -24,8 +24,6 @@ find . -mindepth 2 -not -path '*/\.*' | while read -r file; do
   echo -n "$file *> $destination"
   destination="${destination/#\~/$HOME}"
 
-  mkdir -p "$(dirname "$symlink_dest")"
-
   if [[ -e "$destination" || -L "$destination" ]]; then
     override=1
     [ $apply == 1 ] && msg="replaced" || msg="replace"
@@ -38,6 +36,7 @@ find . -mindepth 2 -not -path '*/\.*' | while read -r file; do
     echo -n " [$msg]"
   else
     [ $override == 1 ] && rm -rf $destination
+    mkdir -p "$(dirname "$destination")"
     ln -s "$file_path" "$destination" && \
     echo -n " [$msg]" || \
     echo -n " [failed]"
