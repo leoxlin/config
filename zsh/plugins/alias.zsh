@@ -24,9 +24,13 @@ alias rmrf='rm -rf'
 alias g='git'
 alias gst='git status'
 
-# Terraform
-alias t='terraform'
-alias tf='terraform'
+if command -v tofu 1>/dev/null 2>&1; then
+  alias t='tofu'
+  alias tf='tofu'
+else
+  alias t='terraform'
+  alias tf='terraform'
+fi
 
 # Tmux
 alias tm='tmux'
