@@ -1,6 +1,11 @@
 #!/bin/bash
 
 mkdir -p $HOME/.zsh
-if [ ! -d $HOME/.zsh/ohmyzsh ]; then
+if [ ! -e $HOME/.zsh/ohmyzsh ]; then
   git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git $HOME/.zsh/ohmyzsh
+fi
+
+mkdir -p $HOME/.vim/bundle
+if [ ! -e $HOME/.vim/bundle/Vundle.vim ]; then
+  git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
 fi
