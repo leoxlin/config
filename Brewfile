@@ -14,3 +14,7 @@ brew 'tmux'
 brew 'vim'
 brew 'watch'
 brew 'pre-commit'
+
+cask '1password'
+cask '1password-cli'
+cask 'wireshark'
