@@ -14,7 +14,5 @@ if [[ "$(uname)" == "Darwin" ]]; then
   if [ ! -e /opt/homebrew/bin/brew ]; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
-  /opt/homebrew/bin/brew install coreutils
-  /opt/homebrew/bin/brew install binutils
-  /opt/homebrew/bin/brew install gnu-sed
+  /opt/homebrew/bin/brew bundle -v
 fi
