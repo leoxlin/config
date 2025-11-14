@@ -17,6 +17,7 @@ if [ -e "/opt/homebrew" ]; then
   export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
   export PATH="/opt/homebrew/opt/binutils/bin:$PATH"
   export PATH="/opt/homebrew/opt/bzip2/bin:$PATH"
+  export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
 fi
 
 [ -e "$HOME/Tools" ] && export PATH="$HOME/Tools:$PATH"
@@ -28,4 +29,4 @@ for f in $(find ~/.zsh/plugins/ -maxdepth 1 -type f -name '*.zsh'); do
   source $f;
 done
 
-keychain -q ~/.ssh/id_ed25519
+command -v keychain > /dev/null && keychain -q ~/.ssh/id_ed25519

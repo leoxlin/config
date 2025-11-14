@@ -9,3 +9,12 @@ mkdir -p $HOME/.vim/bundle
 if [ ! -e $HOME/.vim/bundle/Vundle.vim ]; then
   git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
 fi
+
+if [[ "$(uname)" == "Darwin" ]]; then
+  if [ ! -e /opt/homebrew/bin/brew ]; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  fi
+  /opt/homebrew/bin/brew install coreutils
+  /opt/homebrew/bin/brew install binutils
+  /opt/homebrew/bin/brew install gnu-sed
+fi
