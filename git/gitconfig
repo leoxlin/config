@@ -62,3 +62,5 @@
 	insteadOf = https://github.com/
 [gpg]
 	format = ssh
+[includeIf "hasconfig:remote.*.url:git@github.com:articulate/**"]
+    path = ~/.gitconfig-articulate
